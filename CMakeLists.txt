@@ -130,12 +130,15 @@ elseif(WIN32)
     set(NATS_WARNINGS "-Wno-format -Wsign-compare -Wall -W -Wno-unused-variable -Wno-unused-parameter -Wno-unused-function -Wstrict-prototypes -Wwrite-strings")
   
   endif(MINGW)
-  message(STATUS "win32 options added arch: ${NATS_BUILD_ARCH}")
+
   if (${NATS_BUILD_ARCH} MATCHES "32")     
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m32")
     set(CMAKE_C_LINKER_FLAGS "${CMAKE_C_LINKER_FLAGS} -m32")
-	message(STATUS "win32 -m32 options added arch: ${NATS_BUILD_ARCH}")
+	message(STATUS "win32 32bit arch: -m32 options added: ${NATS_BUILD_ARCH}")
+  else()
+    message(STATUS "win32 64bit arch: -m32 options added: ${NATS_BUILD_ARCH}")
   endif(${NATS_BUILD_ARCH} MATCHES "32")
+
   if(NATS_BUILD_STREAMING)
     set(NATS_PROTOBUF_LIB "${PROTOBUF_DIR}/lib/win/protobuf-c.lib")
   endif(NATS_BUILD_STREAMING)
