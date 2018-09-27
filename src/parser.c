@@ -789,7 +789,7 @@ natsParser_Parse(natsConnection *nc, char* buf, int bufLen)
             int remainingInScratch;
             int toCopy;
 
-#ifdef _WIN32
+#ifdef _MSC_VER
 // Suppresses the warning that nc->ps->argBuf may be NULL.
 // If nc->ps->argBuf is NULL above, then _cloneMsgArg() will set it. If 's'
 // is NATS_OK here, then nc->ps->argBuf can't be NULL.

@@ -17,8 +17,9 @@
 #include <nats.h>
 #include <stdio.h>
 #include <string.h>
+#include <inttypes.h>
 
-#ifdef _WIN32
+#ifdef _MSC_VER
 #define strcasecmp  _stricmp
 #define strdup      _strdup
 #else

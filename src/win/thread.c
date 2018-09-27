@@ -17,10 +17,13 @@
 
 #include "../mem.h"
 
+// typedef void (*natsInitOnceCb)(void);
 static BOOL CALLBACK
 _initHandleFunction(PINIT_ONCE InitOnce, PVOID Parameter, PVOID *lpContext)
 {
-    natsInitOnceCb cb = (natsInitOnceCb) Parameter;
+    //natsInitOnceCb cb = (natsInitOnceCb) Parameter;
+	natsInitOnceCb cb;
+	*(void**)(&cb) = Parameter;
 
     (*cb)();
 
@@ -31,11 +34,14 @@ bool
 nats_InitOnce(natsInitOnceType *control, natsInitOnceCb cb)
 {
     BOOL  bStatus;
+	
+	PVOID dst;
+	memcpy(&dst, &cb, sizeof(PVOID));
 
     // Execute the initialization callback function
     bStatus = InitOnceExecuteOnce(control,
                                   _initHandleFunction,
-                                  (PVOID) cb,
+                                  dst,
                                   NULL);
 
     // InitOnceExecuteOnce function succeeded.

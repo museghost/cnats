@@ -23,8 +23,10 @@
 
 #define _CRT_SECURE_NO_WARNINGS
 
+#ifdef _MSC_VER
 #pragma comment(lib, "Ws2_32.lib")
 #pragma warning(disable : 4996)
+#endif
 
 typedef struct __natsThread
 {
@@ -53,7 +55,11 @@ typedef _locale_t           natsLocale;
 #define NATS_SOCK_ERROR                 (SOCKET_ERROR)
 #define NATS_SOCK_GET_ERROR             WSAGetLastError()
 
-#define __NATS_FUNCTION__ __FUNCTION__
+#if defined(_MSC_VER)
+	#define __NATS_FUNCTION__ __FUNCTION__
+#elif defined(__MINGW32__) || defined(__MINGW64__)
+	#define __NATS_FUNCTION__ __func__
+#endif
 
 // Windows doesn't have those..
 // snprintf support is introduced starting MSVC 14.0 (_MSC_VER 1900: Visual Studio 2015)
@@ -63,9 +69,9 @@ typedef _locale_t           natsLocale;
 #define strcasecmp  _stricmp
 
 #define nats_vsnprintf(b, sb, f, a) vsnprintf_s((b), (sb), (_TRUNCATE), (f), (a))
-#ifdef MSVC
+#if defined(_MSC_VER)
 	#define nats_strtold(p, t)          _strtold_l((p), (t), (natsLib_getLocale()))
-#elif __MINGW32__ || __MINGW64__
+#elif defined(__MINGW32__) || defined(__MINGW64__)
 	#define nats_strtold        strtold
 #endif
 
