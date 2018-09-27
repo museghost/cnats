@@ -128,6 +128,7 @@ natsBuf_Expand(natsBuffer *buf, int newSize)
     int     offset   = (int) (buf->pos - buf->data);
     char    *newData = NULL;
 
+	//printf("newSize: %d, buf->capacity: %d\n", newSize, buf->capacity);
     if (newSize <= buf->capacity)
         return nats_setDefaultError(NATS_INVALID_ARG);
 
@@ -173,16 +174,34 @@ natsBuf_Append(natsBuffer *buf, const char* data, int dataLen)
     {
         // Increase by 10%
         int extra = (int) (n * 0.1);
-        int newSize;
+		extra = (extra < 64) ? 64 : extra;
+        int newSize = 0;
 
         // Make sure that we have at least some bytes left after adding.
-        newSize = (n + (extra < 64 ? 64 : extra));
+        // newSize = (n + (extra < 64 ? 64 : extra));
+		
+		// Overrun
+     	// ((((size_t)1) << (WORDSZ / 2)) - 1); 
+		// WORDSZ =  Thus a 64 bit processor with a C compiler that uses 32 bit pointers should use CPP_WORDSZ of 32, not 64. Default is 32.
 
-        // Overrun.
-        if (newSize < 0)
+		
+#if defined(__MINGW32__) || defined(__MINGW64__) || defined(__GNUC__) || defined(__clang__)
+
+		if (__builtin_sadd_overflow(n, extra, &newSize)) {
+			return nats_setDefaultError(NATS_NO_MEMORY);
+		}	
+		
+		s = natsBuf_Expand(buf, newSize);
+		
+#elif defined(_MSC_VER)
+		if ( ( n | extra ) > ((((int)1) << 16 ) - 1) ) {
             return nats_setDefaultError(NATS_NO_MEMORY);
+		} else {
+			newSize = (n + extra);
+			s = natsBuf_Expand(buf, newSize);
+		}
+#endif
 
-        s = natsBuf_Expand(buf, newSize);
     }
 
     if (s == NATS_OK)
