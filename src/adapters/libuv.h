@@ -247,14 +247,21 @@ static void
 closeSchedulerCb(uv_handle_t* scheduler)
 {
     natsLibuvEvents *nle = (natsLibuvEvents*) scheduler->data;
-
-    uv_close((uv_handle_t*) nle->handle, finalCloseCb);
+    if (!uv_is_closing((uv_handle_t*) nle->handle)) {
+        uv_close((uv_handle_t*) nle->handle, finalCloseCb);
+    } else {
+        finalCloseCb((uv_handle_t*) nle->handle);
+    }
 }
 
 static void
 uvAsyncDetach(natsLibuvEvents *nle)
 {
-    uv_close((uv_handle_t*) nle->scheduler, closeSchedulerCb);
+    if (!uv_is_closing((uv_handle_t*) nle->scheduler)) {
+        uv_close((uv_handle_t*) nle->scheduler, closeSchedulerCb);
+    } else {
+        closeSchedulerCb((uv_handle_t*) nle->scheduler);
+    }
 }
 
 static void
