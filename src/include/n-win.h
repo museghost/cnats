@@ -63,7 +63,11 @@ typedef _locale_t           natsLocale;
 #define strcasecmp  _stricmp
 
 #define nats_vsnprintf(b, sb, f, a) vsnprintf_s((b), (sb), (_TRUNCATE), (f), (a))
-#define nats_strtold(p, t)          _strtold_l((p), (t), (natsLib_getLocale()))
+#ifdef MSVC
+	#define nats_strtold(p, t)          _strtold_l((p), (t), (natsLib_getLocale()))
+#elif __MINGW32__ || __MINGW64__
+	#define nats_strtold        strtold
+#endif
 
 int
 nats_asprintf(char **newStr, const char *fmt, ...);
