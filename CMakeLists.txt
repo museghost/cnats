@@ -136,7 +136,7 @@ elseif(WIN32)
     set(CMAKE_C_LINKER_FLAGS "${CMAKE_C_LINKER_FLAGS} -m32")
 	message(STATUS "win32 32bit arch: -m32 options added: ${NATS_BUILD_ARCH}")
   else()
-    message(STATUS "win32 64bit arch: -m32 options added: ${NATS_BUILD_ARCH}")
+    message(STATUS "win32 64bit arch: ${NATS_BUILD_ARCH}")
   endif(${NATS_BUILD_ARCH} MATCHES "32")
 
   if(NATS_BUILD_STREAMING)
