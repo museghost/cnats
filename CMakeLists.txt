@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.8)
 
 project(cnats)
 include(CTest)
@@ -84,7 +84,6 @@ if(UNIX)
   set(NATS_PLATFORM_INCLUDE "unix")
   
   if(APPLE)
-    set(CMAKE_MACOSX_RPATH OFF)
     set(NATS_OS "DARWIN")
     if(NATS_BUILD_STREAMING)
       set(NATS_PROTOBUF_LIB "${PROTOBUF_DIR}/lib/darwin/libprotobuf-c.a")
