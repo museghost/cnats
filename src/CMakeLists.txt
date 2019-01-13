@@ -45,3 +45,18 @@ install(TARGETS nats_static ARCHIVE DESTINATION ${NATS_LIBDIR})
 install(FILES deprnats.h DESTINATION ${NATS_INCLUDE_DIR} RENAME nats.h)
 install(FILES nats.h status.h version.h DESTINATION ${NATS_INCLUDE_DIR}/nats)
 install(FILES adapters/libevent.h adapters/libuv.h DESTINATION ${NATS_INCLUDE_DIR}/nats/adapters)
+
+# --------------------------------------
+# pkg-config
+# --------------------------------------
+set(PKG_CONFIG "${CMAKE_BINARY_DIR}/${PROJECT_NAME}.pc")
+set(PKGCONFIG_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}/pkgconfig")
+
+# configure pkg config file
+configure_file("../cnats.pc.in" "${PKG_CONFIG}" @ONLY)
+
+# install pkg config file
+install(
+    FILES "${PKG_CONFIG}"
+    DESTINATION "${PKGCONFIG_INSTALL_DIR}"
+)

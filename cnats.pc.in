@@ -1,0 +1,10 @@
+prefix=@CMAKE_INSTALL_PREFIX@
+includedir=${prefix}/include
+libdir=${exec_prefix}/lib
+
+Name: @PROJECT_NAME@
+Description: nats c client
+URL: http://nats.io
+Version: @NATS_VERSION_MAJOR@.@NATS_VERSION_MINOR@.@NATS_VERSION_PATCH@
+Libs: -L${libdir} -lnats
+Cflags: -I${includedir}
