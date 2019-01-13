@@ -49,7 +49,7 @@ install(FILES adapters/libevent.h adapters/libuv.h DESTINATION ${NATS_INCLUDE_DI
 # --------------------------------------
 # pkg-config
 # --------------------------------------
-set(PKG_CONFIG "${CMAKE_BINARY_DIR}/${PROJECT_NAME}.pc")
+set(PKG_CONFIG "${CMAKE_BINARY_DIR}/nats.pc")
 set(PKGCONFIG_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}/pkgconfig")
 
 # configure pkg config file
