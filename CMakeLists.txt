@@ -53,12 +53,13 @@ if(NATS_BUILD_NO_PREFIX_CONNSTS)
   add_definitions(-DNATS_CONN_STATUS_NO_PREFIX)
 endif(NATS_BUILD_NO_PREFIX_CONNSTS)
 
-include(GNUInstallDirs)
 # Platform specific settings
 if(UNIX)
   #---------------------------------------------------------------------------
   # Define NATS cache variables that override the CMAKE and MEMCHECK variables
   #---------------------------------------------------------------------------
+  include(GNUInstallDirs)
+
   set(NATS_LIBDIR ${CMAKE_INSTALL_LIBDIR})
   set(NATS_INCLUDE_DIR ${CMAKE_INSTALL_INCLUDEDIR})
 
@@ -117,6 +118,7 @@ elseif(WIN32)
   set(NATS_OS "_WIN32")
   set(NATS_PLATFORM_INCLUDE "win")
   if(MINGW)
+	include(GNUInstallDirs)
     message(STATUS "mingw compiler supported")
 	add_definitions(-D_WIN32 -DWIN32 -DWINNT -D_WINNT -DMINGW32 -DWINVER=0x0600 -D_WIN32_WINNT=0x0600 -Dnats_EXPORTS)
 	set(NATS_COMMON_C_FLAGS "-std=c99 -pedantic")
